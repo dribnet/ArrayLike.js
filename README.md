@@ -4,6 +4,19 @@ isArray.js
 A minimalist specification and polyfill for allowing any
 JavaScript object to advertise itself as an array.
 
+TL;DR
+-----
+```js
+// javascript libraries should use the following to check if an object is an array
+function isArray(obj) {
+    return ((obj && obj.isArray === '[object Array]') || 
+            (Object.prototype.toString.call(obj) === '[object Array]'));
+}
+
+// javascript container objects can then indicate to libraries that they provide Array methods
+myContainer.prototype.isArray = '[object Array]';
+```
+
 Rationale
 ---------
 
@@ -29,7 +42,7 @@ This specification serves to offer an alternative to JavaScript
 library writers in order to allow these chimera array-like objects
 to advertise their intentions.
 In addition, it provides a polyfill for programmers who wish to
-use these objects today in lieu of cooperating JavaScript libraries.
+use these handy container objects today in lieu of cooperating JavaScript libraries.
 
 Current Practices
 -----------------
@@ -40,7 +53,7 @@ community.
 
 ### instanceof Array
 
-Inexperienced JavaScript programmers will choose the most obvious
+Often JavaScript programmers will choose the most obvious
 solution:
 
 ```js
@@ -49,7 +62,7 @@ function isArray (obj) {
 }
 ```
 
-This is a very common idiom, but is not robust. Specifically, it
+This is a common idiom, but is not robust. Specifically, it
 is known to fail [in multi-frame DOM environments](http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/)
 because objects do not share prototypes [across iframes](http://bugs.dojotoolkit.org/ticket/5334). It similarly
 fails in other contexts, such as [node-webkit](https://github.com/angular/angular.js/pull/1966) where arrays can be created in
@@ -90,7 +103,7 @@ This solution is [well known](http://stackoverflow.com/questions/4775722/javascr
 
 ### Array.isArray
 
-A more recent addition to ECMAScript addresses this issue specifically:
+A recent addition to ECMAScript addresses this issue specifically:
 
 ```js
 function isArray(obj) {
@@ -98,10 +111,10 @@ function isArray(obj) {
 }
 ```
  
-This is another excellent solution, provided the library need only target
-ECMAScript 5 standard JavaScript engines. In all other situations, the
+This is another excellent solution, provided the library only targets
+JavaScript 1.8.5 or greater. In all other situations, the
 above Object.prototype.toString technique should be used instead.
-Mozilla concurs with this opinion, and suggests [a polyfill based
+Mozilla agrees with this opinion, and suggests [a polyfill based
 on Object.prototype.toString](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/isArray#Compatibility) when Array.isArray is not natively available.
 
 isArray.js Specification
