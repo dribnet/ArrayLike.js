@@ -1,5 +1,5 @@
 /**
- * Provides support for isArray for libraries that verify an objects
+ * Provides isArray.js support for for libraries that verify an object
  * is an array via either Object.prototype.toString or Array.isArray.
  *
  * For more information: https://github.com/dribnet/isArray.js
@@ -9,7 +9,7 @@
 // and stores the original function so it can be restored
 (function(ar) {
   var isArray = ar.isArray;
-  // toString is only used if isArray does not exist
+  // toString is only used if Array.isArray does not exist
   var toString = Object.prototype.toString;
   ar["$originalToString"] = isArray;
   ar.isArray = function(obj) {
@@ -21,7 +21,7 @@
       return isArray.call(that, obj);
     }
     else {
-      // fallback - polyfill the isArray method
+      // fallback - polyfill the Array.isArray method
       return toString.call(obj) === "[object Array]";
     }
   }

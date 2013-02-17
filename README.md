@@ -13,13 +13,13 @@ for providing containers for ordered data.
 
 Many other container types exist that provide similar functionality
 to JavaScript Arrays, but are implemented as JavaScript Objects.
-These container classes might provide additional convenience
+These container objects might provide additional convenience
 for the programmer, new semantics not otherwise available in the
-JavaScript Array class, or might represent sequential types in
+JavaScript Array object, or might represent sequential types in
 other programming languages implemented in JavaScript.
 
-These container classes often choose to implement some of all
-of the Array class methods to provide an interface familiar to
+These container objects often choose to implement some of all
+of the JavaScript Array methods to provide an interface familiar to
 JavaScript programmers and be interoperable with existing JavaScript
 libraries. But JavaScript interop is often thwarted by libraries
 which inspect their arguments and require bona fide Array as
@@ -104,13 +104,13 @@ above Object.prototype.toString technique should be used instead.
 Mozilla concurs with this opinion, and suggests [a polyfill based
 on Object.prototype.toString](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/isArray#Compatibility) when Array.isArray is not natively available.
 
-isArray Specification
-=====================
+isArray.js Specification
+========================
 
 As a supplement to the accepted [Object.prototype.toString](#objectprototypetostring) and
-[Array.isArray](#arrayisarray) practices above, the isArray
+[Array.isArray](#arrayisarray) practices above, the isArray.js
 specification adds one additional check on the object. Should
-an object contain a property named isArray which is equal to
+an object contain a property named `isArray` which is equal to
 the ECMAScript standard Array string, then that object should
 for all intents and purposes be treated as an Array as well.
 
@@ -133,14 +133,14 @@ function isArray(obj) {
 }
 ```
 
-The isArray member was chosen to match the standard
+The `isArray` member was chosen to match the standard
 Array.isArray method name. This field is set to the somewhat
 unlikely string `[object Array]` as that closely matches
 current best practices and is unlikely to collide objects
 in the wild which happens to inadvertently contain an isArray
 member.
 
-Authors of container classes that wish to conform to this
+Authors of container objects that wish to conform to this
 standard have a very simple means of indicating to library
 consumers that the container should be treated as an array:
 
@@ -151,13 +151,13 @@ myContainer.prototype.isArray = '[object Array]';
 What does isArray mean?
 -----------------------
 
-An object flagged with isArray simply means that it wishes
+An object comforming to isArray.js simply means that it wishes
 to be treated as an array. It does guarantee to follow
-all Array semantics or runtime characteristics of implemented methods.
+all JavaScript Array semantics or runtime characteristics of implemented methods.
 Notably, it does not necessarily indicate that the object
-provided conforms to the full Array interface.
+provided conforms to the full JavaScript Array interface.
 
-Instead, the burden is on the authors of the container classes
+Instead, the burden is on the authors of the container objects
 to document which subset of the Array interface is supported
 and what performance issues might be in their use. This is
 best understood with a few examples.
@@ -165,9 +165,9 @@ best understood with a few examples.
 ### Enhanced arrays
 
 A common case is authors
-of container classes that do not wish to modify
+of container objects that do not wish to modify
 the Array prototype directly, but instead wish
-to offer an enhanced array-like container class.
+to offer an enhanced array-like container object.
 
 For example, the [array](https://github.com/MatthewMueller/array)
 project provides array like objects that also support
@@ -181,7 +181,7 @@ new iteration techniques such as:
       .select(/^T/)
 ```
 
-In addition, this array class also supports event
+In addition, this array object also supports event
 callbacks on element addition and removal. These capabilities
 offer several conveniences to the programmer, but at the
 same time can be consumed by other JavaScript libraries
@@ -189,8 +189,8 @@ as a normal array via the isArray specification.
 
 ### Linked list
 
-A linked list implementation could full conform to the
-isArray specification. This would very likely provide
+A linked list implementation could fully conform to the
+isArray.js specification. This would very likely provide
 improved performance on algorithms that rely heavily
 on insertion. However, iteration over the list would
 then be an O(n) operation, and so care should be
@@ -204,7 +204,7 @@ for(var i=0; i < myArray.length; i++) {
 ```
 
 Instead consumers of this container could be instructed to
-prefer an O(n) forEach alternative:
+prefer the O(n) forEach alternative:
 
 ```js
 var myArray = linkedListArray(sourceData);
@@ -216,7 +216,7 @@ myArray.forEach(function(element) {
 ### Lazy infinite sequences
 
 An infinite sequence is a useful programming abstraction, though
-this is not usually seen in JavaScript. An isArray implementation
+this is not usually seen in JavaScript. An isArray.js implementation
 could provide this functionality via a subset of the Array interface:
 
 ```js
@@ -230,37 +230,47 @@ These are just a few examples of ordered collections that
 can usefully co-exist in the JavaScript environment as Array-like
 objects.
 
-isArray Polyfill
-================
+isArray.js Polyfill
+===================
 
 A JavaScript [polyfill](http://en.wikipedia.org/wiki/Polyfill) is
-available for using isArray containers on libraries that do not
-otherwise conform to the isArray specification above. This polyfill
+available for using isArray.js containers on libraries that do not
+otherwise conform to the isArray.js specification above. This polyfill
 works by patching the Object.prototype.toString method as well
 as the Array.isArray method so that they recognize objects matching
-this isArray specification. This patch can be subsequently reversed
+this isArray.js specification. We also plan to allow this patch to be subsequently reversed
 programmatically, which is useful when used with libraries that make
 defensive copies of these methods.
 
-The isArray authors very much prefer JavaScript libraries to
-conform to the isArray specification so that this
+The isArray.js authors very much prefer JavaScript libraries to
+conform to the isArray.js specification so that this
 polyfill is unnecessary. However, it is offered as a useful
 crutch to anyone wanting to use the growing family of
-isArray containers without modifying existing JavaScript
+isArray.js containers without modifying existing JavaScript
 libraries.
 
+Sample Code
+===========
 
-Conforming JavaScript containers
---------------------------------
+In addition to the isArray-polyfill, this repository contains a simple example
+of an isArray.js container object, along with two libraries. One library conforms
+to the spec above and recognizes the container object as an array, and the other
+does not but is made to be compatible via the polyfill. The [conforming example](http://dribnet.github.com/isArray.js/conforms.html)
+and the [polyfill example](http://dribnet.github.com/isArray.js/polyfill.html) are both viewable online, and viewing the source
+will show that the output is generated by feeding the example library native
+arrays followed by an isArray.js conformant container object.
+
+isArray.js containers
+---------------------
 * [mrhyde](https://github.com/dribnet/strokes) lets native ClojureScript containers to play nice with JavaScript libraries.
 * [array](https://github.com/MatthewMueller/array) provides a better array for the browser and node.js
 
-Conforming JavaScript libraries
--------------------------------
+JavaScript libraries recognizing isArray.js containers
+------------------------------------------------------
 * Who wants to be the first?
 
-JavaScript libraries compatible with isArray polyfill
------------------------------------------------------
+JavaScript libraries compatible with isArray.js polyfill
+--------------------------------------------------------
 * [AngularJS](http://angularjs.org/) version 1.1.3-3c2aee01 or greater
 * [Leaflet](http://leafletjs.com/) version 0.5.0 or greater
 

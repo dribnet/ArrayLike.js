@@ -1,5 +1,5 @@
 /**
- *  Simple example of a library that conforms to isArray array checking
+ *  Simple example of a library that conforms to isArray.js array checking
  */
 
 (function(window, document, undefined) {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>isArray - polyfill example</title>
+<title>isArray.js - polyfill example</title>
 <style>
 
 body {
@@ -11,12 +11,12 @@ body {
 </style>
 
 <body>
-  <!-- this polyfill provides isArray compatibility (remove to verify) -->
+  <!-- this polyfill provides isArray.js compatibility (remove to verify) -->
   <script type="text/javascript" src="isArray-polyfill.js"></script>
-  <!-- this example library does not use the isArray spec -
+  <!-- this example library does not use the isArray.js spec -
        but is now compatible thanks the above polyfill. -->
   <script type="text/javascript" src="examplelib-compatible.js"></script>
-  <!-- triplet objects conform to the isArray spec -->
+  <!-- triplet objects conform to the isArray.js spec -->
 	<script type="text/javascript" src="triplet.js"></script>
   <script>
     // we can use the example library to process native arrays
@@ -26,7 +26,7 @@ body {
     // but we can also construct a custom array type
     var t = triplet(3, 6, 9);
 
-    // and also pass that to the library because it conforms to isArray
+    // and also pass that to the library because it conforms to isArray.js
     examplelib.displaySum(t);
     examplelib.displayProduct(t);
   </script>
