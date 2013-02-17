@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>isArray - conforming library example</title>
+<style>
+
+body {
+  font: 500 36px "Lucida Console";
+  margin: 30px 30px 30px 30px;
+}
+
+</style>
+
+<body>
+  <!-- this example library conforms to the isArray spec  -->
+  <script type="text/javascript" src="examplelib-conforms.js"></script>
+  <!-- triplet objects also conform the isArray spec -->
+	<script type="text/javascript" src="triplet.js"></script>
+  <script>
+    // we can use the example library to process native arrays
+    examplelib.displaySum([1, 2]);
+    examplelib.displayProduct([1, 2]);
+
+    // but we can also construct a custom array type
+    var t = triplet(3, 6, 9);
+
+    // and also pass that to the library thanks to the polyfill
+    examplelib.displaySum(t);
+    examplelib.displayProduct(t);
+  </script>
+</body>
