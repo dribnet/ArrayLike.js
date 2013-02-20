@@ -11,7 +11,7 @@
   var isArray = ar.isArray;
   // toString is only used if Array.isArray does not exist
   var toString = Object.prototype.toString;
-  ar["$originalToString"] = isArray;
+  ar["$originalIsArray"] = isArray;
   ar.isArray = function(obj) {
     var that = this;
     if(obj && obj.isArray === '[object Array]') {

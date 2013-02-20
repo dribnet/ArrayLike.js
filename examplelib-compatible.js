@@ -1,5 +1,8 @@
 /**
- *  Simple example of a library that conforms to isArray.js array checking
+ *  Simple example of a library that uses both best practices for determining
+ *  if an object is a JavaScript Array: Object.prototype.toString and
+ *  Array.isArray. Though this library does not conform to isArray.js, both of
+ *  these checks can be corrected with the isArray-polyfill.
  */
 
 (function(window, document, undefined) {
