@@ -1,8 +1,8 @@
 /**
  *  Simple example of a library that uses both best practices for determining
  *  if an object is a JavaScript Array: Object.prototype.toString and
- *  Array.isArray. Though this library does not conform to isArray.js, both of
- *  these checks can be corrected with the isArray-polyfill.
+ *  Array.isArray. Though this library does not use ArrayLike.js conventions, 
+ *  both of these checks can be coerced with the ArrayLikeIsArray.
  */
 
 (function(window, document, undefined) {
@@ -46,8 +46,21 @@ function displayProduct(arr) {
   document.body.innerHTML += arr.join(" * ") + " = " + product + "<p>";
 }
 
+// given an array, show the result of multiplication of elements
+function displayReversed(arr) {
+  if(!isArray(arr)) {
+    alert("displayReversed: Sorry " + arr + " is not an array");
+    return;
+  }
+  document.body.innerHTML += "reverse: " + arr + " => ";
+  arr.reverse();
+  document.body.innerHTML += arr + "<p>";
+  arr.reverse(); // put it back...
+}
+
 // publish external api
 examplelib.displaySum = displaySum;
 examplelib.displayProduct = displayProduct;
+examplelib.displayReversed = displayReversed;
 
 })(window, document);

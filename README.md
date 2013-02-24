@@ -1,20 +1,19 @@
-isArray.js
-==========
+ArrayLike.js
+============
 
 A minimalist specification and polyfill for allowing any
-JavaScript object to advertise itself as an array.
+JavaScript object to advertise itself as having Array functionality.
 
 Summary
 -------
 ```js
-// javascript libraries should use the following to check if an object is an array
-function isArray(obj) {
-    return ((obj && obj.isArray === '[object Array]') || 
-            (Object.prototype.toString.call(obj) === '[object Array]'));
+// javascript libraries can internally use the following to check if an object supports Array methods
+function isArrayLike(obj) {
+    return obj && obj.__ArrayLike || Object.prototype.toString.call(obj) === '[object Array]';
 }
 
 // javascript container objects can then indicate to libraries that they provide Array methods
-myContainer.prototype.isArray = '[object Array]';
+myContainer.prototype.__ArrayLike = true;
 ```
 
 Rationale
@@ -26,100 +25,98 @@ for providing containers for ordered data.
 
 Many other container types exist that provide similar functionality
 to JavaScript Arrays, but are implemented as JavaScript Objects.
-These container objects might provide additional convenience
+Several of these [array-like objects](https://www.inkling.com/read/javascript-definitive-guide-david-flanagan-6th/chapter-7/array-like-objects) are well established, such as the JavaScript `arguments` object for holding
+variable-length arguments lists and the results of many DOM methods
+such as `document.getElementsByTagName()`.
+But other new container objects are also possible that can provide additional convenience
 for the programmer, new semantics not otherwise available in the
 JavaScript Array object, or might represent sequential types in
 other programming languages implemented in JavaScript.
 
-These container objects often choose to implement some of all
+These new container objects often choose to implement some of all
 of the JavaScript Array methods to provide an interface familiar to
 JavaScript programmers and be interoperable with existing JavaScript
-libraries. But JavaScript interop is often thwarted by libraries
-which inspect their arguments and require bona fide Array as
+libraries. 
+However, JavaScript interop is often thwarted by libraries
+which inspect their arguments and require bona fide JavaScript Array as
 a prerequisite to further processing.
 
 This specification serves to offer an alternative to JavaScript
 library writers in order to allow these chimera array-like objects
-to advertise their intentions. [Several examples](Examples.md)
+to advertise their ability to supports Array methods. [Several examples](Examples.md)
 of potential use cases for using these array-like container objects
-are also available separatley.
+are also available separately.
 In addition, this repo provides a polyfill for programmers who wish to
 use these handy container objects today in lieu of cooperating JavaScript libraries.
 
-isArray.js Specification
-========================
+ArrayLike.js Specification
+==========================
 
 A separate page details JavaScript's [current idioms
 for determining if an object is an array](CurrentPractices.md).
 For the two accepted best practices of using [Object.prototype.toString](CurrentPractices.md#objectprototypetostring) and
-[Array.isArray](CurrentPractices.md#arrayisarray), the isArray.js
+[Array.isArray](CurrentPractices.md#arrayisarray), the ArrayLike.js
 specification adds one additional check on the object. Should
-an object contain a property named `isArray` which is equal to
-the ECMAScript standard Array string, then that object should
-for all intents and purposes be treated as an Array as well.
+an object contain a property named `__ArrayLike` which evaluates
+to true, then that object can be used in a context expecting
+Array methods and funcationlity.
 
-So for JavaScript library authors and maintainers, we propose the
-following function for checking if an object is an Array:
+So for JavaScript library authors and maintainers, we propose an internal funciton
+such as the following for checking if an object support Array methods:
 
 ```js
-function isArray(obj) {
-    return ((obj && obj.isArray === '[object Array]') || 
-            (Object.prototype.toString.call(obj) === '[object Array]'));
+function isArrayLike(obj) {
+    return obj && obj.__ArrayLike || Object.prototype.toString.call(obj) === '[object Array]';
 }
 ```
 
 We also endorse this secondary form which uses Array.isArray directly:
 
 ```js
-function isArray(obj) {
-    return ((obj && obj.isArray === '[object Array]') || 
-            (Array.isArray(obj)));
+function isArrayLike(obj) {
+    return obj && obj.__ArrayLike || Array.isArray(obj);
 }
 ```
-
-The `isArray` member was chosen to match the standard
-Array.isArray method name. This field is set to the somewhat
-unlikely string `[object Array]` as that closely matches
-current best practices and is unlikely to collide objects
-in the wild which happens to inadvertently contain an isArray
-member.
 
 Authors of container objects that wish to conform to this
 standard have a very simple means of indicating to library
 consumers that the container should be treated as an array:
 
 ```js
-myContainer.prototype.isArray = '[object Array]';
+myContainer.prototype.__ArrayLike = true;
 ```
 
-isArray.js Polyfill
-===================
+ArrayLike.js Polyfill
+=====================
 
-A JavaScript [polyfill is available](isArray-polyfill.js) for using isArray.js containers on libraries that do not
-otherwise conform to the isArray.js specification above. This polyfill
+A JavaScript [polyfill is available](ArrayLikeIsArray.js) for using ArrayLike
+containers on libraries that do not
+otherwise use to the ArrayLike.js convention. This polyfill
 works by patching the Object.prototype.toString method as well
-as the Array.isArray method so that they recognize objects matching
-this isArray.js specification. We also plan to allow this patch to be subsequently reversed
+as the Array.isArray method so that they container objects conforming to the
+this ArrayLike.js specification will instead pass the standard JavaScript Array
+introspection checks.
+We also plan to allow this patch to be subsequently reversed
 programmatically, which is useful when used with libraries that make
 defensive copies of these methods.
 
-The isArray.js authors very much prefer JavaScript libraries to
-conform to the isArray.js specification so that this
+The ArrayLike.js authors very much prefer JavaScript libraries to
+conform to this ArrayLike specification so that this
 polyfill is unnecessary. However, it is offered as a useful
 crutch to anyone wanting to use the current family of
-isArray.js containers without modifying existing JavaScript
+ArrayLike containers without modifying existing JavaScript
 libraries.
 
 Sample Code
 ===========
 
-In addition to the isArray-polyfill, this repository contains [a simple example
-of an isArray.js container object](triplet.js), along with two libraries. [One library conforms
+In addition to the ArrayLike polyfill, this repository contains [a simple example
+of an ArrayLike container object](triplet.js), along with two libraries. [One library conforms
 to the spec above](examplelib-conforms.js) and recognizes the container object as an array, and [the other
-does not](examplelib-compatible.js) but is made to be compatible via [the polyfill](isArray-polyfill.js). The [conforming example](http://dribnet.github.com/isArray.js/conforms.html)
-and the [polyfill example](http://dribnet.github.com/isArray.js/polyfill.html) are both viewable online, and [viewing the source](conforms.html)
+does not](examplelib-compatible.js) but is made to be compatible via [the polyfill](ArrayLikeIsArray.js). The [conforming example](http://dribnet.github.com/ArrayLike.js/conforms.html)
+and the [polyfill example](http://dribnet.github.com/ArrayLike.js/polyfill.html) are both viewable online, and [viewing the source](conforms.html)
 will show that the output is generated by feeding the example library native
-arrays followed by an isArray.js conformant container object.
+arrays followed by an isArrayLike.js conformant container object.
 
 isArray.js containers
 ---------------------

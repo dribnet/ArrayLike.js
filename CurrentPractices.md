@@ -22,7 +22,7 @@ because objects do not share prototypes [across iframes](http://bugs.dojotoolkit
 fails in other contexts, such as [node-webkit](https://github.com/angular/angular.js/pull/1966) where arrays can be created in
 the Node.js context.
 
-For these reasons the authors of isArray.js suggest never using
+For these reasons the authors of ArrayLike.js suggest never using
 this technique in JavaScript libraries. [John Resig](http://en.wikipedia.org/wiki/John_Resig), [Dean Edwards](http://en.wikipedia.org/wiki/CssQuery), and other prominent JavaScript developers [concur](http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/#comment-37193).
 
 ### Duck-typing

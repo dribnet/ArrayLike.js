@@ -1,8 +1,8 @@
-Examples of Array-like objects
-==============================
+Examples of ArrayLike objects
+=============================
 
-An object comforming to isArray.js simply means that it wishes
-to be treated as an array. It does guarantee to follow
+An object comforming to ArrayLike.js simply means that it wishes
+to be treated as an Array. It does guarantee to follow
 all JavaScript Array semantics or runtime characteristics of implemented methods.
 Notably, it does not necessarily indicate that the object
 provided conforms to the full JavaScript Array interface.
@@ -35,12 +35,13 @@ In addition, this array object also supports event
 callbacks on element addition and removal. These capabilities
 offer several conveniences to the programmer, but at the
 same time can be consumed by other JavaScript libraries
-as a normal array via the isArray specification.
+as a normal array via the ArrayLike specification.
 
 ### Linked list
 
-A linked list implementation could fully conform to the
-isArray.js specification. This would very likely provide
+A linked list implementation could choose to implement
+all JavaScript Array methods and conform to the ArrayLike
+convention. This would very likely provide
 improved performance on algorithms that rely heavily
 on insertion. However, iteration over the list would
 then be an O(n) operation, and so care should be
@@ -78,7 +79,7 @@ marshalling or serializing the container class.
 ### Lazy infinite sequences
 
 An infinite sequence is a useful programming abstraction, though
-this is not usually seen in JavaScript. An isArray.js implementation
+this is not usually seen in JavaScript. An ArrayLike implementation
 could provide this functionality via a subset of the Array interface:
 
 ```js
@@ -89,5 +90,5 @@ console.log("first prime > 100 is " + n);
 ```
 
 These are just a few examples of ordered collections that
-can usefully co-exist in the JavaScript environment as Array-like
+can usefully co-exist in the JavaScript environment as ArrayLike
 objects.
