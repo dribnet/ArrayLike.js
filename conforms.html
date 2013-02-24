@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>isArray.js - conforming library example</title>
+<title>ArrayLike.js - conforming library example</title>
 <style>
 
 body {
@@ -17,8 +17,10 @@ body {
   <script type="text/javascript" src="triplet.js"></script>
   <script>
     // we can use the example library to process native arrays
-    examplelib.displaySum([1, 2]);
-    examplelib.displayProduct([1, 2]);
+    var a = [1, 2];
+    examplelib.displaySum(a);
+    examplelib.displayProduct(a);
+    examplelib.displayReversed(a);
 
     // but we can also construct a custom array type
     var t = triplet(3, 6, 9);
@@ -26,5 +28,6 @@ body {
     // and also pass that to the library because it conforms to isArray.js
     examplelib.displaySum(t);
     examplelib.displayProduct(t);
+    examplelib.displayReversed(t);
   </script>
 </body>
