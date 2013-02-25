@@ -25,6 +25,8 @@
       return toString.call(obj) === "[object Array]";
     }
   }
+  // also install isArrayLike, but here it matches isArray
+  ar.isArrayLike = ar.isArray;
 })(Array);
 
 // this method patches Object.prototype.toString

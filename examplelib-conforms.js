@@ -47,8 +47,8 @@ function displayProduct(arr) {
 
 // given an array, show the result of multiplication of elements
 function displayReversed(arr) {
-  if(!isArrayLike(arr)) {
-    alert("displayReversed: Sorry " + arr + " is not ArrayLike");
+  if(!Array.isArrayLike(arr)) {
+    alert("displayReversed: Sorry " + arr + " failed Array.isArrayLike");
     return;
   }
   document.body.innerHTML += "reverse: " + arr + " => ";
