@@ -132,7 +132,7 @@ JavaScript libraries recognizing ArrayLike containers
 
 JavaScript libraries compatible via ArrayLikeIsArray.js polyfill
 ----------------------------------------------------------------
-* [AngularJS](http://angularjs.org/) version 1.1.3-3c2aee01 or greater
+* [AngularJS](http://angularjs.org/) version 1.1.3 or greater
 * [Leaflet](http://leafletjs.com/) version 0.5.0 or greater
 
 Contributing
